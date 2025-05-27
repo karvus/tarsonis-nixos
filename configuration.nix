@@ -26,7 +26,7 @@ nix = {
 };
 
 
-users.defaultUserShell = pkgs.zsh;
+users.defaultUserShell = pkgs.fish;
 users.users.thomas = {
 	isNormalUser = true;
 	home = "/home/thomas";
@@ -101,6 +101,7 @@ programs.neovim = {
 	defaultEditor = true;
 };
 
+programs.fish.enable = true;
 programs.zsh.enable = true;
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
