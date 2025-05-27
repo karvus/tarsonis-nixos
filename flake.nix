@@ -6,13 +6,21 @@
     # Use `nix flake update` to update the flake to the latest revision of the chosen release channel.
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = { url = "github:nix-community/home-manager";
-                     inputs.nixpkgs.follows = "nixpgks" ;
+                     inputs.nixpkgs.follows = "nixpkgs";
                    };
   };
-  outputs = inputs@{ self, nixpkgs, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
     # NOTE: 'nixos' is the default hostname
     nixosConfigurations.tarsonis-vm = nixpkgs.lib.nixosSystem {
-      modules = [ ./configuration.nix ];
+      modules = [
+        ./configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.thomas = import ./home.nix;
+        }
+      ];
     };
   };
 }
