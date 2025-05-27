@@ -1,9 +1,18 @@
 { config, pkgs, ... }:
+let
+  myNeovimConfig = pkgs.fetchFromGitHub {
+    owner = "karvus";
+    repo = "kickstart.nvim";
+    rev = "main"; # Or a specific commit hash/tag for reproducibility
+  };
+in
 {
   home.username = "thomas";
   home.homeDirectory = "/home/thomas";
+  xdg.configFile."nvim".source = myNeovimConfig;
   programs.home-manager.enable = true;
   programs.neovim.enable = true;
+  programs.fish.enable = true;
   programs.zsh = {
     enable = true;
     enableCompletions = true;
