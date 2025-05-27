@@ -7,7 +7,6 @@
   programs.zsh = {
     enable = true;
     enableCompletions = true;
-    autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {
       ll = "ls -l";
