@@ -25,6 +25,8 @@ nix = {
 	};
 };
 
+
+users.defaultUserShell = pkgs.zsh;
 users.users.thomas = {
 	isNormalUser = true;
 	home = "/home/thomas";
