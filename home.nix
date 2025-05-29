@@ -1,5 +1,4 @@
-{ config, pkgs, lib, inputs, ... }: # Ensure 'lib' is available for lib.mkForce
-
+{ pkgs, inputs, ... }: 
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
@@ -16,6 +15,7 @@
 	shfmt
 	ripgrep
 	fd
+  codex
   ];
 
   # Enable Home Manager itself.
@@ -77,6 +77,7 @@
           lua_ls.enable = true;
           nil_ls.enable = true; # For Nix files
           jsonls.enable = true;
+          nixd.enable = true;
           # tsserver.enable = true;
           # rust_analyzer.enable = true;
         };
@@ -189,14 +190,22 @@
         settings = {
           highlight = { enable = true; };
           indent = { enable = true; };
-          insure_installed = [
-          "nix" "lua" "vimdoc" "javascript" "typescript"
-          "html" "css" "json" "yaml" "markdown"
-          "bash" "rust" "python"
-          ];
+          ensure_installed = [
+            "bash"
+            "c"
+            "diff"
+            "html"
+            "lua"
+            "luadoc"
+            "markdown"
+            "markdown_inline"
+            "query"
+            "vim"
+            "vimdoc"
+            "nix"
+          ]; 
         };
-        # Ensure common parsers are installed
-        };
+      };
 
       # Git Integration (similar to git-signs, diffview.nvim)
       gitsigns.enable = true;
@@ -283,7 +292,10 @@
     # plugins.telescope-dap.enable = true;
 
     # For other configurations like formatters and linters (null-ls replacement)
-    # plugins.conform-nvim.enable = true;
+    plugins.conform-nvim = {
+      enable = true;
+
+    };
     # plugins.nvim-lint.enable = true;
   }; 
 
