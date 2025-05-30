@@ -8,12 +8,12 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachSystem [ "aarch64-linux" ] (system:
       let
         pkgs = import nixpkgs { inherit system; };
       in {
         nixosConfigurations.vmserver = nixpkgs.lib.nixosSystem {
-          system = system;
+          system = "x86_64-linux";
           modules = [
             ({ config, lib, pkgs, ... }: {
 
