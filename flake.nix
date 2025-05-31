@@ -8,8 +8,8 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, nixvim, ... }: {
-    nixosConfigurations.tarsonis-vm = nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
+    nixosConfigurations.tarsonis = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
 
       modules = [
         ./configuration.nix

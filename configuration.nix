@@ -7,14 +7,14 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      # ./hardware-configuration.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "tarsonis-vm"; # Define your hostname.
+  networking.hostName = "tarsonis"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -33,6 +33,7 @@ users.users.thomas = {
 	description = "Thomas Stenhaug";
 	extraGroups = [ "wheel" "networkmanager" ];
 	openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHZfxPyxgyAAaLNd31zx7nZkkqQWrvg6wbDzLI2aoA7T thomas@karmm1.local" ];
+	initialPassword = "test";
 };
 
 services.openssh = {

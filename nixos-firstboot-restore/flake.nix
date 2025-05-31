@@ -4,14 +4,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachSystem [ "aarch64-linux" ] (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in {
+  outputs = { self, nixpkgs }:
+  {
         nixosConfigurations.vmserver = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
@@ -26,13 +22,14 @@
 
               systemd.targets."first-boot" = {
                 description = "First boot target to restore state";
-                requires = [ "borg-restore.service" ];
+                requires = [ "borg-restore.service" "network-online.target" ];
                 after = [ "network-online.target" ];
                 wantedBy = [ "default.target" ];
               };
 
               systemd.services.borg-restore = {
                 description = "Restore system state from Borg backup";
+		requires = [ "network-online.target" ];
                 after = [ "network-online.target" ];
                 serviceConfig = {
                   Type = "oneshot";
@@ -43,7 +40,7 @@
                     export BORG_PASSPHRASE="changeme"
                     borg extract $BORG_REPO::latest
                     echo "=== Restore complete ==="
-                    systemctl isolate multi-user.target
+                    # systemctl isolate multi-user.target
                   '';
                   StandardOutput = "journal+console";
                   StandardError = "journal+console";
@@ -52,8 +49,7 @@
 
               boot.loader.grub.device = "/dev/vda";
               boot.kernelParams = [ "console=ttyS0" ];
-              services.getty.autoLogin.root = true;
-              services.getty.defaultUser = "root";
+              services.getty.autologinUser = "root";
               services.getty.extraArgs = [ "--noclear" ];
               console.enable = true;
 
@@ -61,6 +57,6 @@
             })
           ];
         };
-      });
+      };
 }
 
